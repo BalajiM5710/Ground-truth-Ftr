@@ -3,8 +3,8 @@ import os
 import random
 import pandas as pd
 
-# Define the path to the images directory
-image_dir = "images"
+# Define the paths to the images directories
+image_dirs = ["image1", "image2/image2"]
 
 # Initialize session state to keep track of seen images and votes
 if 'seen_images' not in st.session_state:
@@ -12,8 +12,10 @@ if 'seen_images' not in st.session_state:
 if 'votes' not in st.session_state:
     st.session_state.votes = []
 
-# List all images in the directory
-image_files = [f for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))]
+# List all images in both directories
+image_files = []
+for image_dir in image_dirs:
+    image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
 
 # Filter out images that have already been seen
 unseen_images = [img for img in image_files if img not in st.session_state.seen_images]
@@ -29,7 +31,7 @@ else:
     current_image = random.choice(unseen_images)
     
     # Display the image
-    st.image(os.path.join(image_dir, current_image), use_column_width=True)
+    st.image(current_image, use_column_width=True)
     
     # Define the voting function
     def vote(emotion):
