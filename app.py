@@ -4,7 +4,7 @@ import random
 import pandas as pd
 
 # Define the paths to the images directories
-image_dirs = ["images1", "images2"]
+image_dirs = ["sample"]
 
 # Initialize session state to keep track of seen images and votes
 if 'seen_images' not in st.session_state:
