@@ -4,7 +4,7 @@ import random
 import pandas as pd
 
 # Define the paths to the images directories
-image_dirs = ["sample"]
+
 
 # Path to the CSV file that stores votes
 votes_csv_path = 'votes.csv'
