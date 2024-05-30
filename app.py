@@ -4,7 +4,7 @@ import random
 import pandas as pd
 
 # Define the paths to the images directories
-image_dirs = "sample"
+image_dirs = ["sample"]
 
 # Initialize session state to keep track of seen images and votes
 if 'seen_images' not in st.session_state:
@@ -12,7 +12,7 @@ if 'seen_images' not in st.session_state:
 if 'votes' not in st.session_state:
     st.session_state.votes = []
 
-# List all images in both directories
+# List all images in the directories
 image_files = []
 for image_dir in image_dirs:
     image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
