@@ -29,6 +29,16 @@ for image_dir in image_dirs:
 # Filter out images that have already been voted on
 unseen_images = [img for img in image_files if img not in voted_images]
 
+# Calculate the progress
+total_images = len(image_files)
+voted_images_count = len(voted_images)
+unseen_images_count = total_images - voted_images_count
+
+# Display the progress
+progress = voted_images_count / total_images
+st.progress(progress)
+st.write(f"{voted_images_count}/{total_images} images have been voted on.")
+
 # If all images have been seen, show a completion message and provide a download link for the CSV
 if not unseen_images:
     st.write("All images have been voted on!")
