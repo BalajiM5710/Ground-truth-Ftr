@@ -13,7 +13,7 @@ votes_csv_path = 'votes.csv'
 # Load existing votes
 if os.path.exists(votes_csv_path):
     votes_df = pd.read_csv(votes_csv_path)
-    voted_images = set(votes_df['file_name'])
+    voted_images = set(votes_df[
 else:
     votes_df = pd.DataFrame(columns=['file_name', 'voted_emotion', 'voter_name'])
     voted_images = set()
