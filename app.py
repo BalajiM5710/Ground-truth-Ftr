@@ -5,7 +5,7 @@ import pandas as pd
 import hashlib
 
 # Define the paths to the images directories
-image_dirs = ["images1","image
+image_dirs = ["images1","images2"]
 
 # Path to the CSV file that stores votes
 votes_csv_path = 'votes.csv'
@@ -46,20 +46,28 @@ if username:
     # Filter out images that have already been voted on by this user
     unseen_images = [img for img in st.session_state.user_chunk if img not in voted_images]
 
-    # Calculate the progress
-    total_images = len(st.session_state.user_chunk)
-    voted_images_count = total_images - len(unseen_images)
+    # Calculate the user's progress
+    total_images_user = len(st.session_state.user_chunk)
+    voted_images_user_count = total_images_user - len(unseen_images)
+    user_progress = voted_images_user_count / total_images_user
+
+    # Calculate the overall progress
+    total_images = len(image_files)
+    voted_images_count = len(voted_images)
+    overall_progress = voted_images_count / total_images
+
+    # Display the progress bars
+    st.write("Your Progress")
+    st.progress(user_progress)
+    st.write(f"{voted_images_user_count}/{total_images_user} images have been voted on.")
     
-    # Display the progress
-    progress = voted_images_count / total_images
-    st.progress(progress)
+    st.write("Overall Progress")
+    st.progress(overall_progress)
     st.write(f"{voted_images_count}/{total_images} images have been voted on.")
 
-    # If all images have been seen, show a completion message and provide a download link for the CSV
+    # If all images have been seen by this user, show a completion message
     if not unseen_images:
-        st.write("All images have been voted on!")
-        csv = votes_df.to_csv(index=False)
-        st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
+        st.write("You have voted on all your images!")
     else:
         # Randomly select an image from the unseen images
         current_image = random.choice(unseen_images)
@@ -84,5 +92,11 @@ if username:
         st.button('Sad', on_click=vote, args=('sad',))
         st.button('Neutral', on_click=vote, args=('neutral',))
         st.button('Angry', on_click=vote, args=('angry',))
+
+    # If all images have been voted on by all users, provide a download link for the CSV
+    if overall_progress == 1.0:
+        st.write("All images have been voted on by all users!")
+        csv = updated_votes_df.to_csv(index=False)
+        st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
 else:
     st.write("Please enter your name to start voting.")
