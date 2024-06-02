@@ -13,7 +13,7 @@ votes_csv_path = 'votes.csv'
 # Load existing votes
 if os.path.exists(votes_csv_path):
     votes_df = pd.read_csv(votes_csv_path)
-    voted_images = set(votes_df[
+    voted_images = set(votes_df['file_name'])
 else:
     votes_df = pd.DataFrame(columns=['file_name', 'voted_emotion', 'voter_name'])
     voted_images = set()
@@ -30,7 +30,7 @@ for image_dir in image_dirs:
     image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
 
 # Split images into chunks
-num_chunks = 2
+num_chunks = 5
 chunks = [image_files[i::num_chunks] for i in range(num_chunks)]
 
 # Function to get the chunk index for a user
