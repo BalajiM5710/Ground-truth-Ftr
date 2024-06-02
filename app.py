@@ -99,17 +99,9 @@ if username:
         csv = votes_df.to_csv(index=False)
         st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
 
-    # Prompt the user to refresh the page manually after 2 seconds
-    st.write("Please refresh the page to see the updated progress.")
-    st.write(
-        """
-        <script>
-        setTimeout(function(){
-            window.location.reload();
-        }, 2000);
-        </script>
-        """,
-        unsafe_allow_html=True
-    )
+    # Prompt the user to refresh the page manually
+    st.write("Please click the button below to refresh the page and see the updated progress.")
+    if st.button("Refresh"):
+        st.experimental_rerun()
 else:
     st.write("Please enter your name to start voting.")
