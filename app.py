@@ -5,7 +5,7 @@ import pandas as pd
 import hashlib
 
 # Define the paths to the images directories
-image_dirs = ["images1","images2"]
+image_dirs = ["sample"]
 
 # Path to the CSV file that stores votes
 votes_csv_path = 'votes.csv'
@@ -40,18 +40,14 @@ def get_chunk_index(username):
 # Input for the user's name
 username = st.text_input("Enter your name:")
 if username:
-    session_id = username
-    session_state = st.session_state.get(session_id, {})
-    if 'user_chunk' not in session_state:
-        chunk_index = get_chunk_index(username)
-        session_state['user_chunk'] = chunks[chunk_index]
-    st.session_state[session_id] = session_state
+    chunk_index = get_chunk_index(username)
+    st.session_state.user_chunk = chunks[chunk_index]
     
     # Filter out images that have already been voted on by this user
-    unseen_images = [img for img in session_state['user_chunk'] if img not in voted_images]
+    unseen_images = [img for img in st.session_state.user_chunk if img not in voted_images]
 
     # Calculate the user's progress
-    total_images_user = len(session_state['user_chunk'])
+    total_images_user = len(st.session_state.user_chunk)
     voted_images_user_count = total_images_user - len(unseen_images)
     user_progress = voted_images_user_count / total_images_user
 
@@ -82,10 +78,13 @@ if username:
         # Define the voting function
         def vote(emotion):
             # Add the vote to the session state
-            vote_info = (current_image, emotion, username)
-            votes_df.loc[len(votes_df)] = vote_info
-            votes_df.to_csv(votes_csv_path, index=False)
+            st.session_state.votes.append((current_image, emotion, username))
+            # Update the votes CSV file
+            new_vote_df = pd.DataFrame(st.session_state.votes, columns=['file_name', 'voted_emotion', 'voter_name'])
+            updated_votes_df = pd.concat([votes_df, new_vote_df])
+            updated_votes_df.to_csv(votes_csv_path, index=False)
             # Clear the current votes from session state
+            st.session_state.votes = []
             st.experimental_rerun()
 
         # Display voting buttons
@@ -99,5 +98,10 @@ if username:
         st.write("All images have been voted on by all users!")
         csv = votes_df.to_csv(index=False)
         st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
+
+    # Prompt the user to refresh the page manually
+    st.write("Please click the button below to refresh the page and see the updated progress.")
+    if st.button("Refresh"):
+        st.experimental_rerun()
 else:
     st.write("Please enter your name to start voting.")
