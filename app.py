@@ -3,9 +3,10 @@ import os
 import random
 import pandas as pd
 import hashlib
+from time import sleep
 
 # Define the paths to the images directories
-image_dirs = ["images1","images2"]
+image_dirs = ["sample"]
 
 # Path to the CSV file that stores votes
 votes_csv_path = 'votes.csv'
@@ -30,7 +31,7 @@ for image_dir in image_dirs:
     image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
 
 # Split images into chunks
-num_chunks = 5
+num_chunks = 2
 chunks = [image_files[i::num_chunks] for i in range(num_chunks)]
 
 # Function to get the chunk index for a user
@@ -96,7 +97,10 @@ if username:
     # If all images have been voted on by all users, provide a download link for the CSV
     if overall_progress == 1.0:
         st.write("All images have been voted on by all users!")
-        csv = updated_votes_df.to_csv(index=False)
+        csv = votes_df.to_csv(index=False)
         st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
 else:
     st.write("Please enter your name to start voting.")
+
+# Autorefresh the app every 10 seconds to keep progress bars updated
+st_autorefresh(interval=10 * 1000, key='data_refresh')
