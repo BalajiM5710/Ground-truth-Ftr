@@ -8,7 +8,7 @@ import hashlib
 image_dirs = ["sample"]
 
 # Path to the CSV file that stores votes
-votes_csv_path = 'votes.cs
+votes_csv_path = 'votes.csv'
 
 # Load existing votes
 if os.path.exists(votes_csv_path):
