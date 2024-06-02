@@ -31,7 +31,7 @@ for image_dir in image_dirs:
     image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
 
 # Split images into chunks
-num_chunks = 2
+num_chunks = 5
 chunks = [image_files[i::num_chunks] for i in range(num_chunks)]
 
 # Function to get the chunk index for a user
@@ -102,5 +102,5 @@ if username:
 else:
     st.write("Please enter your name to start voting.")
 
-# Autorefresh the app every 10 seconds to keep progress bars updated
-st_autorefresh(interval=10 * 1000, key='data_refresh')
+# Refresh the app every 10 seconds to keep progress bars updated
+st.experimental_rerun(interval=5)
