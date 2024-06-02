@@ -5,7 +5,7 @@ import pandas as pd
 import hashlib
 
 # Define the paths to the images directories
-image_dirs = ["images1","image
+image_dirs = ["images1","images2"]
 
 # Path to the CSV file that stores votes
 votes_csv_path = 'votes.csv'
