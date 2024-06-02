@@ -99,8 +99,17 @@ if username:
         st.write("All images have been voted on by all users!")
         csv = votes_df.to_csv(index=False)
         st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
+
+    # Automatically refresh the page every 10 seconds
+    st.write(
+        """
+        <script>
+        setInterval(function(){
+            window.location.reload();
+        }, 10000);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 else:
     st.write("Please enter your name to start voting.")
-
-# Refresh the app every 10 seconds to keep progress bars updated
-st.experimental_rerun(interval=5)
