@@ -3,7 +3,6 @@ import os
 import random
 import pandas as pd
 import hashlib
-from time import sleep
 
 # Define the paths to the images directories
 image_dirs = ["sample"]
@@ -31,7 +30,7 @@ for image_dir in image_dirs:
     image_files.extend([os.path.join(image_dir, f) for f in os.listdir(image_dir) if f.lower().endswith(('png', 'jpg', 'jpeg', 'gif'))])
 
 # Split images into chunks
-num_chunks = 5
+num_chunks = 2
 chunks = [image_files[i::num_chunks] for i in range(num_chunks)]
 
 # Function to get the chunk index for a user
@@ -100,7 +99,17 @@ if username:
         csv = votes_df.to_csv(index=False)
         st.download_button(label="Download Votes CSV", data=csv, file_name="votes.csv", mime="text/csv")
 
-    # Automatically refresh the page every 2 seconds
-    st.experimental_rerun()
+    # Prompt the user to refresh the page manually after 2 seconds
+    st.write("Please refresh the page to see the updated progress.")
+    st.write(
+        """
+        <script>
+        setTimeout(function(){
+            window.location.reload();
+        }, 2000);
+        </script>
+        """,
+        unsafe_allow_html=True
+    )
 else:
     st.write("Please enter your name to start voting.")
