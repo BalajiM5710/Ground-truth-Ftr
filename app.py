@@ -2,7 +2,7 @@ import streamlit as st
 import os
 import random
 import pandas as pd
-import hashlib
+import ha
 
 # Define the paths to the images directories
 image_dirs = ["images1","images2"]
